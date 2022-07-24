@@ -1,58 +1,100 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yujelee <yujelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/24 16:50:41 by yujelee           #+#    #+#             */
+/*   Updated: 2022/07/24 19:16:32 by yujelee          ###   ########seoul.kr  */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libftprintf.h"
 #include <stdio.h>
 
-void    printfaddr(long long addr, char *hex)
+int	printf_hex(long long num, char *hex, int count)
 {
-    if (addr > 16)
-        printfaddr(addr / 16, hex);
-    else
-        ft_putchar_fd(hex[addr], 1);
+	if (num >= 16)
+	{
+		count = printf_hex(num / 16, hex, ++count);
+		num = num % 16;
+	}
+	ft_putchar(hex[num]);
+	return (count);
 }
 
-void    pprocessor(void *addr, char *hex)
+int	pprocessor(void *addr, char *hex)
 {
-    ft_putstr_fd("0x", 1);
-    printfaddr((long long)addr, hex);
+	ft_putstr("0x");
+	return (printf_hex((long long)addr, hex, 1) + 2);
 }
 
-void    parsing(char form, va_list av)
+int	xprocessor(unsigned int num, char form)
 {
-    if (form == 'c')
-        ft_putchar_fd(va_arg(av, int), 1);
-    else if (form == 's')
-        ft_putstr_fd(va_arg(av, char *), 1);
-    else if (form== 'p')
-        pprocessor(va_arg(av, void *), "0123456789abcdef");
-    else if (form == 'd' || form == 'i')
-        ft_putnbr_fd(va_arg(av, int), 1);
-    else if (form == 'u')
-        printf("u\n");
-    else if (form == 'x' || form == 'X')
-        printf("x\n");
-    else if (form == '%')
-        ft_putchar_fd('%', 1);
+	if (form == 'x')
+		return (printf_hex(num, "0123456789abcdef", 1));
+	else
+		return (printf_hex(num, "0123456789ABCDEF", 1));
 }
 
-int ft_printf(char *str, ...)
+int	parsing(char form, va_list av)
 {
-    va_list av;
-    int     idx;
+	int count;
 
-    idx = -1;
-    va_start(av, str);
-    while (str[++idx])
-    {
-        if (str[idx] != '%')
-            parsing(str[++idx], av);
-        else if (!str[idx])
-            break;
-        else
-            ft_putchar_fd(str[idx], 1);
-    }
-    
-   return (0);
+	count = 0;
+	if (form == 'c')
+		count += ft_putchar(va_arg(av, int));
+	else if (form == 's')
+		count += ft_putstr(va_arg(av, char *));
+	else if (form == 'p')
+		count += pprocessor(va_arg(av, void *), "0123456789abcdef");
+	else if (form == 'd' || form == 'i')
+		count += ft_putnbr(va_arg(av, int));
+	else if (form == 'u')
+		count += ft_putunsignednbr(va_arg(av, int));
+	else if (form == 'x' || form == 'X')
+		count += xprocessor(va_arg(av, unsigned int), form);
+	else if (form == '%')
+		count += ft_putchar('%');
+	return (count);
 }
 
-int main(){
-    ft_printf("wdwdwdwwdw");
+int	ft_printf(char *str, ...)
+{
+	va_list	av;
+	int		idx;
+	int		count;
+
+	idx = -1;
+	va_start(av, str);
+	count = 0;
+	while (str[++idx])
+	{
+		if (str[idx] == '%')
+			count += parsing(str[++idx], av);
+		else if (!str[idx])
+			break ;
+		else
+		{
+			ft_putchar(str[idx]);
+			++count;
+		}
+	}
+	return (count);
 }
+
+/*
+int main()
+{
+
+	char *e = "QWEQWEQWEQWEweqweqweqwe";
+	//int a = -34234;
+	//char d = '4';
+	int b;
+	int c;
+	b = ft_printf("wqeqweqwe%swww  %sew\n", e, e);
+	c = printf("wqeqweqwe%swww  %sew\n", e, e);
+	printf("****%d %d\n", b, c);
+}
+*/
