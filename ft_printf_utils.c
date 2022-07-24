@@ -6,11 +6,11 @@
 /*   By: yujelee <yujelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 17:59:39 by yujelee           #+#    #+#             */
-/*   Updated: 2022/07/24 19:16:46 by yujelee          ###   ########seoul.kr  */
+/*   Updated: 2022/07/24 20:05:00 by yujelee          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 #include <stdio.h>
 
 static int	ft_put_rec(long c, int count)
@@ -59,7 +59,9 @@ int	ft_putstr(char *s)
 	if (s)
 	{
 		while (s[idx])
-			write(1, &s[idx++], 1);
+			ft_putchar(s[idx++]);
+		return (idx);
 	}
-	return (idx);
+	write(1, "(null)", 6);
+	return (6);
 }

@@ -6,14 +6,14 @@
 /*   By: yujelee <yujelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 16:50:41 by yujelee           #+#    #+#             */
-/*   Updated: 2022/07/24 19:16:32 by yujelee          ###   ########seoul.kr  */
+/*   Updated: 2022/07/24 20:07:24 by yujelee          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 #include <stdio.h>
 
-int	printf_hex(long long num, char *hex, int count)
+int	printf_hex(unsigned long long num, char *hex, int count)
 {
 	if (num >= 16)
 	{
@@ -40,31 +40,33 @@ int	xprocessor(unsigned int num, char form)
 
 int	parsing(char form, va_list av)
 {
-	int count;
+	int	count;
 
-	count = 0;
 	if (form == 'c')
-		count += ft_putchar(va_arg(av, int));
+		count = ft_putchar(va_arg(av, int));
 	else if (form == 's')
-		count += ft_putstr(va_arg(av, char *));
+		count = ft_putstr(va_arg(av, char *));
 	else if (form == 'p')
-		count += pprocessor(va_arg(av, void *), "0123456789abcdef");
+		count = pprocessor(va_arg(av, void *), "0123456789abcdef");
 	else if (form == 'd' || form == 'i')
-		count += ft_putnbr(va_arg(av, int));
+		count = ft_putnbr(va_arg(av, int));
 	else if (form == 'u')
-		count += ft_putunsignednbr(va_arg(av, int));
+		count = ft_putunsignednbr(va_arg(av, int));
 	else if (form == 'x' || form == 'X')
-		count += xprocessor(va_arg(av, unsigned int), form);
+		count = xprocessor(va_arg(av, unsigned int), form);
 	else if (form == '%')
-		count += ft_putchar('%');
+		count = ft_putchar('%');
+	else
+		count = -1;
 	return (count);
 }
 
-int	ft_printf(char *str, ...)
+int	ft_printf(const char *str, ...)
 {
 	va_list	av;
 	int		idx;
 	int		count;
+	int		temp;
 
 	idx = -1;
 	va_start(av, str);
@@ -72,29 +74,18 @@ int	ft_printf(char *str, ...)
 	while (str[++idx])
 	{
 		if (str[idx] == '%')
-			count += parsing(str[++idx], av);
-		else if (!str[idx])
-			break ;
+		{
+			temp = parsing(str[++idx], av);
+			if (temp < 0)
+				return (0);
+			count += temp;
+		}
 		else
 		{
 			ft_putchar(str[idx]);
 			++count;
 		}
 	}
+	va_end(av);
 	return (count);
 }
-
-/*
-int main()
-{
-
-	char *e = "QWEQWEQWEQWEweqweqweqwe";
-	//int a = -34234;
-	//char d = '4';
-	int b;
-	int c;
-	b = ft_printf("wqeqweqwe%swww  %sew\n", e, e);
-	c = printf("wqeqweqwe%swww  %sew\n", e, e);
-	printf("****%d %d\n", b, c);
-}
-*/
