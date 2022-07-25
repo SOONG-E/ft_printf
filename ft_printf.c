@@ -6,12 +6,11 @@
 /*   By: yujelee <yujelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 16:50:41 by yujelee           #+#    #+#             */
-/*   Updated: 2022/07/24 20:07:24 by yujelee          ###   ########seoul.kr  */
+/*   Updated: 2022/07/25 17:01:47 by yujelee          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 int	printf_hex(unsigned long long num, char *hex, int count)
 {

@@ -6,7 +6,7 @@
 /*   By: yujelee <yujelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 20:05:48 by yujelee           #+#    #+#             */
-/*   Updated: 2022/07/24 20:05:54 by yujelee          ###   ########seoul.kr  */
+/*   Updated: 2022/07/25 17:02:02 by yujelee          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
-# include <limits.h>
 # include <unistd.h>
 
 int	ft_printf(const char *str, ...);

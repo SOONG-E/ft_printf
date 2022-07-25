@@ -6,12 +6,11 @@
 /*   By: yujelee <yujelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 17:59:39 by yujelee           #+#    #+#             */
-/*   Updated: 2022/07/24 20:05:00 by yujelee          ###   ########seoul.kr  */
+/*   Updated: 2022/07/25 17:01:58 by yujelee          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 static int	ft_put_rec(long c, int count)
 {
